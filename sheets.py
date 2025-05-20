@@ -1,13 +1,8 @@
-import gspread
+import os
+import json
+from google.oauth2.service_account import Credentials
 
-gc = gspread.service_account(filename='credentials.json')
-sheet = gc.open('Analises WhatsApp').worksheet('Mensagens')
+creds_dict = json.loads(os.getenv("GOOGLE_CREDS_JSON"))
+creds = Credentials.from_service_account_info(creds_dict)
 
-def salvar_no_sheets(data, numero, original, topicos, plano):
-    sheet.append_row([
-        data.strftime('%d/%m/%Y %H:%M'),
-        numero,
-        original,
-        topicos,
-        plano
-    ])
+gc = gspread.authorize(creds)
